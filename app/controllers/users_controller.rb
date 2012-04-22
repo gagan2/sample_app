@@ -13,10 +13,16 @@ def index
 end
 
 def destroy
+
+if params[:id] != 1.to_s
 User.find(params[:id]).destroy
-flash[:success] = "User destroyed."
+flash[:success] = params[:id] != 1.to_s
+else
+flash[:error]="You cannot delete yourself"
+end
 redirect_to users_path
 end
+
 
 
  def show
@@ -25,6 +31,7 @@ end
  end
 
   def new
+redirect_to(root_path) unless !signed_in?
   @user = User.new
   @title = "Sign up"
   end
@@ -58,6 +65,7 @@ end
 
 
 def create
+redirect_to(root_path) unless !signed_in?
 @user = User.new(params[:user])
 if @user.save
 sign_in @user
